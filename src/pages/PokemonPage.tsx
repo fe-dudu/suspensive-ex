@@ -6,6 +6,7 @@ import NotFoundErrorSection from 'components/NotFoundErrorSection';
 import PokemonCard from 'components/PokemonCard';
 import PokemonCardsSectionSkeleton from 'components/PokemonCardsSectionSkeleton';
 import PokemonCardWrapper from 'components/PokemonCardWrapper';
+import ThrowError from 'components/ThrowError';
 import UnauthorizedErrorSection from 'components/UnauthorizedErrorSection';
 import UnknownErrorSection from 'components/UnknownErrorSection';
 import { ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError } from 'constants/error';
@@ -20,22 +21,24 @@ export default function PokemonPage() {
             <ErrorBoundary shouldCatch={UnauthorizedError} fallback={<UnauthorizedErrorSection />}>
               <Suspense fallback={<PokemonCardsSectionSkeleton />}>
                 <SuspenseQuery {...pokemonsQueryOptions()}>
-                  {({ data: pokemons }) => (
-                    <QueryClientConsumer>
-                      {queryClient => (
-                        <PokemonCardWrapper>
-                          {pokemons.map(pokemon => (
-                            <PokemonCard
-                              key={pokemon.id}
-                              pokemon={pokemon}
-                              onClick={() => {
-                                queryClient.invalidateQueries(pokemonsQueryOptions());
-                              }}
-                            />
-                          ))}
-                        </PokemonCardWrapper>
-                      )}
-                    </QueryClientConsumer>
+                  {({ data: pokemons, isFetching, error }) => (
+                    <ThrowError isFetching={isFetching} error={error}>
+                      <QueryClientConsumer>
+                        {queryClient => (
+                          <PokemonCardWrapper>
+                            {pokemons.map(pokemon => (
+                              <PokemonCard
+                                key={pokemon.id}
+                                pokemon={pokemon}
+                                onClick={() => {
+                                  queryClient.invalidateQueries(pokemonsQueryOptions());
+                                }}
+                              />
+                            ))}
+                          </PokemonCardWrapper>
+                        )}
+                      </QueryClientConsumer>
+                    </ThrowError>
                   )}
                 </SuspenseQuery>
               </Suspense>

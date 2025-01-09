@@ -1,10 +1,10 @@
-import Routes from 'pages/Route';
+import PokemonPage from 'pages/PokemonPage';
 import { TanstackQueryProvider } from 'providers/TanstackQueryProvider';
 
 function App() {
   return (
     <TanstackQueryProvider>
-      <Routes />
+      <PokemonPage />
     </TanstackQueryProvider>
   );
 }
