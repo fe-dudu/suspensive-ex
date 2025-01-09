@@ -1,13 +1,12 @@
-import PokemonPage from "pages/PokemonPage"
-import { TanstackQueryProvider } from "providers/TanstackQueryProvider"
-
+import Routes from 'pages/Route';
+import { TanstackQueryProvider } from 'providers/TanstackQueryProvider';
 
 function App() {
   return (
     <TanstackQueryProvider>
-      <PokemonPage/>
+      <Routes />
     </TanstackQueryProvider>
-  )
+  );
 }
 
-export default App
+export default App;
